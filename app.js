@@ -3,6 +3,8 @@ var express = require('express'),
 	server = require('http').createServer(app),
 	io = require('socket.io').listen(server);
 	
+io.set('log level', 1);
+	
 exports.io = io;
 	
 var room = require('./routes/room');
@@ -16,6 +18,8 @@ app.use(express.session({secret: '1234567890QWERTY'}));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.static(__dirname + '/public'));
+
+var SITENAME = "CryptoChat";
 
 app.get('/', site.index);
 app.get('/room/:uid', room.main);

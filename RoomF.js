@@ -16,7 +16,7 @@ var room = {
 			//var address = socket.handshake.address;
 			self.newUser(socket);
 			
-			socket.emit('console', {user: "welcome"});
+			socket.emit('provide:pubKey');
 			
 			socket.on('msg', function(data) {
 				// data = {uidFrom: xxx, uidTo: xxx, msg: xxx}
@@ -33,10 +33,8 @@ var room = {
 			});
 			
 			socket.on('pubKey:set', function(data) {
-				if(data.uid === socket.id){
-					self.userList[data.uid].pubKey = data.pubKey;
-					socket.broadcast.emit('user:details',{uid: data.uid, pubKey: data.pubKey, nickname: self.userList[data.uid].nickname});
-				}
+				self.userList[socket.id].pubKey = data.pubKey;
+				socket.broadcast.emit('user:details',{uid: socket.id, pubKey: data.pubKey, nickname: self.userList[socket.id].nickname});
 			});
 			
 			socket.on('disconnect', function () {
